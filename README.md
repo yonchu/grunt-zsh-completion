@@ -4,6 +4,12 @@
 [grunt](https://github.com/gruntjs/grunt)/
 [grunt-cli](https://github.com/gruntjs/grunt-cli)
 
+
+![Screenshot1](https://raw.github.com/yonchu/grunt-zsh-completion/master/img/screenshot01.png)
+
+![Screenshot2](https://raw.github.com/yonchu/grunt-zsh-completion/master/img/screenshot02.png)
+
+
 ## Installation
 
 Put the `_grunt` file to the `fpath` directory.
