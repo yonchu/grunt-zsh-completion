@@ -16,7 +16,7 @@
 # -----------------------------------------------------------------------------
 
 _grunt() {
-    local state ret=1
+    local state
     local -a tasks
 
     _arguments \
@@ -33,19 +33,19 @@ _grunt() {
     '(--verbose,-v)'{--verbose,-v}'[Verbose mode. A lot more information output.]' \
     '(--completion)--completion[Output shell auto-completion rules. See the grunt-cli documentation for more information.]' \
     '*: :->tasks' \
-    && ret=0
+    && return
 
     case $state in
         tasks)
-            if [[ ! "$LBUFFER" =~ -$ ]]; then
-                tasks=(${(@f)"$(__grunt_tasks)"}) \
-                    && _values 'grunt task' "${tasks[@]}" \
-                    && ret=0
+            tasks=(${(@f)"$(__grunt_tasks)"})
+            if [ ${#tasks} -eq 0  ]; then
+                return
             fi
+            _values 'grunt task' "${tasks[@]}" || return 1
         ;;
     esac
 
-    return ret
+    return
 }
 
 __grunt_tasks() {
