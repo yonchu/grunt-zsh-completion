@@ -55,7 +55,7 @@ __grunt_tasks() {
         | grep 'Available tasks' -A 100 \
         | grep '^ ' \
         | grep -v '.*--' \
-        | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//' \
+        | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' \
         | sed -e 's/  /[/' -e 's/$/]/'
 }
 
