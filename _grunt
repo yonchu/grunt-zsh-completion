@@ -54,15 +54,18 @@ function _grunt() {
     # Check show_path option.
     zstyle -b ":completion:${curcontext}:options:" show_grunt_path show_grunt_path
 
-    # Get current gruntfile.
-    gruntfile=$(__grunt_get_gruntfile)
+    # No updatint the cache when complete a option.
+    if [[ $PREFIX == ${PREFIX#-} ]]; then
+        # Get current gruntfile.
+        gruntfile=$(__grunt_get_gruntfile)
 
-    # Retrieve cache.
-    #   The cache file name: grunt
-    #   The cache variable name: __grunt_gruntfile, __grunt_tasks
-    if [[ -f $gruntfile ]]; then
-        if ! __grunt_update_cache "$gruntfile"; then
-            update_msg=' (cache updated)'
+        # Retrieve cache.
+        #   The cache file name: grunt
+        #   The cache variable name: __grunt_gruntfile, __grunt_tasks
+        if [[ -f $gruntfile ]]; then
+            if ! __grunt_update_cache "$gruntfile"; then
+                update_msg=' (cache updated)'
+            fi
         fi
     fi
 
