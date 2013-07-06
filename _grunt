@@ -89,7 +89,7 @@ function _grunt() {
         tasks)
             if [[ -f $gruntfile ]]; then
                 if [[ $show_grunt_path == 'yes' ]]; then
-                    update_msg="$update_msg: $gruntfile"
+                    update_msg="$update_msg: ${${gruntfile/#$HOME/~}%/}"
                 fi
                 _describe -t grunt-task "$verbose grunt task$update_msg" __grunt_tasks || return 1
             fi
