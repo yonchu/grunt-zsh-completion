@@ -1,17 +1,20 @@
 #compdef grunt
 # -----------------------------------------------------------------------------
-# Description
-# -----------
+#  _grunt
 #
-#  Completion script for grunt
-#   (https://github.com/gruntjs/grunt)
-#   (https://github.com/gruntjs/grunt-cli)
+#  Completion script for grunt.
+#   - https://github.com/gruntjs/grunt
+#   - https://github.com/gruntjs/grunt-cli
 #
 # -----------------------------------------------------------------------------
-# Authors
-# -------
 #
-#  * Yonchu <https://github.com/yonchu>
+#  Version     : 0.1.0
+#  Author      : Yonchu <yuyuchu3333@gmail.com>
+#  License     : MIT License
+#  Repository  : https://github.com/yonchu/grunt-zsh-completion
+#  Last Change : 08 Jul 2013.
+#
+#  Copyright (c) 2013 Yonchu.
 #
 # -----------------------------------------------------------------------------
 # USAGE
