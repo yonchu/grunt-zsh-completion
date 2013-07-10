@@ -227,7 +227,7 @@ function __grunt_get_gruntfile() {
                 return
             fi
         done
-        curpath=${curpath:h}
+        curpath=${curpath%/*}
     done
     return 1
 }
