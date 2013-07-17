@@ -12,7 +12,7 @@
 #  Author      : Yonchu <yuyuchu3333@gmail.com>
 #  License     : MIT License
 #  Repository  : https://github.com/yonchu/grunt-zsh-completion
-#  Last Change : 10 Jul 2013.
+#  Last Change : 18 Jul 2013.
 #
 #  Copyright (c) 2013 Yonchu.
 #
@@ -121,9 +121,10 @@ function __grunt_update_cache() {
     # Check no_update_options option.
     zstyle -b ":completion:${curcontext}:options:" no_update_options no_update_options
 
-    if ( [[ ${+__grunt_gruntfile} -eq 0 ]] \
-        || [[ ${+__grunt_opts} -eq 0 ]] \
-        || [[ ${+__grunt_tasks} -eq 0 ]] ) \
+
+    if ! ( ((  $+__grunt_gruntfile )) \
+        && (( $+__grunt_opts )) \
+        && (( $+__grunt_tasks )) ) \
         && ! _retrieve_cache 'grunt'; then
         is_updating=1
     fi
