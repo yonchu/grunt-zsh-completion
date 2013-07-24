@@ -12,7 +12,7 @@
 #  Author      : Yonchu <yuyuchu3333@gmail.com>
 #  License     : MIT License
 #  Repository  : https://github.com/yonchu/grunt-zsh-completion
-#  Last Change : 18 Jul 2013.
+#  Last Change : 22 Jul 2013.
 #
 #  Copyright (c) 2013 Yonchu.
 #
@@ -244,10 +244,7 @@ function __grunt_caching_policy() {
 
     local -a oldp
     local expire
-    zstyle -s ":completion:${curcontext}:options:" expire expire
-    if [[ -z $expire ]]; then
-        expire=7
-    fi
+    zstyle -s ":completion:${curcontext}:options:" expire expire || expire=7
     # Rebuild if cache is more than $expire days.
     oldp=( "$1"(Nm+$expire) )
     (( $#oldp ))
