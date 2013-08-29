@@ -26,6 +26,30 @@ Where the `fpath` directory is ?
 $ echo "$fpath" | tr " " "\n"
 ```
 
+## Installation for oh-my-zsh
+
+1. In the command line, change to `oh-my-zsh` plugins directory:
+
+    ```console
+    $ cd ~/.oh-my-zsh/custom/plugins
+    ```
+
+2. Clone the repository into a new directory called `grunt`:
+
+    ```console
+    git clone https://github.com/yonchu/grunt-zsh-completion.git grunt
+    ```
+
+3. Include `grunt` plugin to your .zshrc file along with other plugins:
+
+    ```zsh
+    ...
+    plugins=(git grunt)
+    ...
+    ```
+
+4. Restart your terminal application.
+
 ## Usage
 
 ### Enable caching
