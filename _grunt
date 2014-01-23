@@ -178,6 +178,7 @@ function __grunt_get_tasks() {
         | grep 'Available tasks' -A 100 \
         | grep '^ ' \
         | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' \
+        | sed -e 's/:/\\:/' \
         | sed -e 's/  /:/'
 }
 
