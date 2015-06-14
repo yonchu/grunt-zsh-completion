@@ -13,7 +13,7 @@
 #  Author      : Yonchu <yuyuchu3333@gmail.com>
 #  License     : MIT License
 #  Repository  : https://github.com/yonchu/grunt-zsh-completion
-#  Last Change : 20 Aug 2014.
+#  Last Change : 14 Jun 2015.
 #
 #  Copyright (c) 2013 Yonchu.
 #
@@ -174,12 +174,23 @@ function __grunt_update_cache() {
 }
 
 function __grunt_get_tasks() {
-    echo -E "$1" \
-        | grep 'Available tasks' -A 100 \
-        | grep '^ ' \
-        | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' \
-        | sed -e 's/:/\\:/g' \
-        | sed -e 's/  /:/'
+    local tasks new_task
+    tasks=(${(f)"$(echo -E "$1" | grep 'Available tasks' -A 100 | grep '^ ')"})
+    for line in "$tasks[@]"; do
+        if echo "$line" | grep -q '^[[:blank:]][[:blank:]]*[^[:blank:]][^[:blank:]]*  [^[:blank:]]'; then
+            if [[ -n $new_task ]]; then
+                echo "$new_task"
+                new_task=
+            fi
+            new_task=$(echo "$line" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -e 's/:/\\:/g' -e 's/  /:/')
+        else
+            new_task="$new_task $(echo $line | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -e 's/:/\\:/g')"
+        fi
+    done
+    if [[ -n $new_task ]]; then
+        echo "$new_task"
+        new_task=
+    fi
 }
 
 function __grunt_get_opts() {
