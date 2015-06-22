@@ -9,11 +9,11 @@
 #
 # -----------------------------------------------------------------------------
 #
-#  Version     : 0.1.3
+#  Version     : 0.1.4
 #  Author      : Yonchu <yuyuchu3333@gmail.com>
 #  License     : MIT License
 #  Repository  : https://github.com/yonchu/grunt-zsh-completion
-#  Last Change : 15 Jun 2015.
+#  Last Change : 23 Jun 2015.
 #
 #  Copyright (c) 2015 Yonchu.
 #
@@ -114,7 +114,7 @@ function __grunt() {
 #   The cache variable name: __grunt_version __grunt_gruntfile __grunt_opts __grunt_tasks
 function __grunt_update_cache() {
     # TODO
-    local version='0.1.3'
+    local version='0.1.4'
     local is_updating=0
     local gruntfile="$1"
     local grunt_info no_update_options cache_path
@@ -214,7 +214,8 @@ function __grunt_get_opts() {
             (( opt_num++ ))
             opt=$(echo -E "$opt" | sed 's/^\(\(--[^ ]*\)\(, \(-[^ ]*\)\)*\)  */\2\\t\4\\\t/')
         fi
-        opt_sep[$opt_num]=("${opt_sep[$opt_num]}${opt}")
+        opt="${opt_sep[$opt_num]} ${opt}"
+        opt_sep[$opt_num]="${opt## }"
     done
 
     for line in "$opt_sep[@]"; do
