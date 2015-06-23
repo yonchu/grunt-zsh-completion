@@ -207,42 +207,43 @@ function __grunt_get_tasks() {
 }
 
 function __grunt_get_opts() {
-    local opt_hunk opt_sep opt_num line opt
-    opt_hunk=$(echo -E "$1" \
-        | grep 'Options$' -A 100 \
-        | sed '1 d' \
-        | sed -e 's/[[:blank:]]*$//' \
-    )
-
-    opt_sep=()
-    opt_hunk=(${(f)opt_hunk})
-    opt_num=0
-    for line in "$opt_hunk[@]"; do
-        opt=$(echo -E "$line" | sed -e 's/^[[:blank:]]*//')
-        if [[ $line == $opt ]]; then
-            break
-        fi
-        if [[ $opt != ${opt#-} ]]; then
-            # Start with -
-            (( opt_num++ ))
-            opt=$(echo -E "$opt" | sed 's/^\(\(--[^ ]*\)\(, \(-[^ ]*\)\)*\)  */\2\\t\4\\\t/')
-        fi
-        opt="${opt_sep[$opt_num]} ${opt}"
-        opt_sep[$opt_num]="${opt## }"
-    done
-
-    for line in "$opt_sep[@]"; do
-        opt=(${(s:\t:)line})
-        if [[ ${opt[1]} == '--help' ]]; then
-            continue
-        fi
-        if [[ ${#opt} -eq 2 ]]; then
-            echo -E "(${opt[1]})${opt[1]}[${opt[2]}]"
-        else
-            echo -E "(${opt[1]},${opt[2]})${opt[1]}[${opt[3]}]"
-            echo -E "(${opt[1]},${opt[2]})${opt[2]}[${opt[3]}]"
-        fi
-    done
+    # ex.)
+    # before:
+    # --xxx, -y  description....
+    # after:
+    # (--xxx,-y)--xxx[description]"
+    # (--xxx,-y)-y[description]"
+    echo -E "$1" | awk \
+        'BEGIN {
+            OPT_COMP_NUM = -1
+            SUB_NR = 0
+        }
+        /Options$/, NF == 0 {
+            SUB_NR++
+            if (SUB_NR == 1 || NF == 0) next
+            sub(/^[ \t]+/, "")
+            sub(/[ \t]+$/, "")
+            if ($0 ~ /^-.*  [^[:blank:]]/) {
+                OPT_COMP_NUM++
+                OPT_COMP[OPT_COMP_NUM] = $0
+            } else {
+                OPT_COMP[OPT_COMP_NUM] = OPT_COMP[OPT_COMP_NUM] " " $0
+            }
+        }
+        END {
+            for (i = 0; i <= OPT_COMP_NUM; i++) {
+                split(OPT_COMP[i], opt_desc, "  ")
+                opt_hunk = opt_desc[1]
+                desc = opt_desc[2]
+                gsub(/ /, "", opt_hunk)
+                if (opt_hunk == "--help,-h") continue
+                split(opt_hunk, opts, ",")
+                for (opt in opts) {
+                    printf "(%s)%s[%s]", opt_hunk, opts[opt], desc
+                    print ""
+                }
+            }
+        }'
 }
 
 function __grunt_get_gruntfile() {
