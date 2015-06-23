@@ -9,7 +9,7 @@
 #
 # -----------------------------------------------------------------------------
 #
-#  Version     : 0.1.4
+#  Version     : 0.2.0
 #  Author      : Yonchu <yuyuchu3333@gmail.com>
 #  License     : MIT License
 #  Repository  : https://github.com/yonchu/grunt-zsh-completion
@@ -114,7 +114,7 @@ function __grunt() {
 #   The cache variable name: __grunt_version __grunt_gruntfile __grunt_opts __grunt_tasks
 function __grunt_update_cache() {
     # TODO
-    local version='0.1.4'
+    local version='0.2.0'
     local is_updating=0
     local gruntfile="$1"
     local grunt_info no_update_options cache_path
