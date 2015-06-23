@@ -174,23 +174,36 @@ function __grunt_update_cache() {
 }
 
 function __grunt_get_tasks() {
-    local tasks new_task
-    tasks=(${(f)"$(echo -E "$1" | grep 'Available tasks' -A 100 | grep '^ ')"})
-    for line in "$tasks[@]"; do
-        if echo "$line" | grep -q '^[[:blank:]][[:blank:]]*[^[:blank:]][^[:blank:]]*  [^[:blank:]]'; then
-            if [[ -n $new_task ]]; then
-                echo "$new_task"
-                new_task=
-            fi
-            new_task=$(echo "$line" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -e 's/:/\\:/g' -e 's/  /:/')
-        else
-            new_task="$new_task $(echo $line | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -e 's/:/\\:/g')"
-        fi
-    done
-    if [[ -n $new_task ]]; then
-        echo "$new_task"
-        new_task=
-    fi
+    echo -E "$1" | awk \
+    'BEGIN {
+        TASK = ""
+        SUB_NR = 0
+    }
+    /Available tasks$/, NF == 0 {
+        SUB_NR++
+        if (SUB_NR == 1 || NF == 0) next
+        if ($0 ~ /^[[:blank:]]+[^[:blank:]]+  [^[:blank:]]/) {
+            if (TASK != "") {
+                print TASK
+                TASK = ""
+            }
+            sub(/^[ \t]+/, "")
+            sub(/[ \t]+$/, "")
+            gsub(/:/, "\\:")
+            sub(/[ ][ ]/, ":")
+            TASK = $0
+        } else {
+            sub(/^[ \t]+/, "")
+            sub(/[ \t]+$/, "")
+            gsub(/:/, "\\:")
+            TASK = TASK " " $0
+        }
+    }
+    END {
+        if (TASK != "") {
+            print TASK
+        }
+    }'
 }
 
 function __grunt_get_opts() {
